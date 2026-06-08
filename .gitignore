@@ -24,5 +24,6 @@ tmp/
 .DS_Store
 Thumbs.db
 
-# API keys (just in case)
+# Environment files (API keys)
+.env
 *.key
