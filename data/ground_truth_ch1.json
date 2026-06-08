@@ -1,0 +1,71 @@
+{
+  "domain": "computer_science",
+  "topic": "Building Abstractions with Functions — Section 1.1",
+  "concepts": [
+    {
+      "id": "gt-001",
+      "name": "Computation Fundamentals",
+      "must_understand": [
+        "计算始于表示信息",
+        "计算需要指定处理信息的逻辑",
+        "抽象用于管理逻辑的复杂性"
+      ]
+    },
+    {
+      "id": "gt-002",
+      "name": "Programming Language",
+      "must_understand": [
+        "编程语言用于定义计算过程",
+        "编程语言需要被人类和计算机共同理解"
+      ]
+    },
+    {
+      "id": "gt-003",
+      "name": "Python Expressions",
+      "must_understand": [
+        "Python 代码由表达式和语句组成",
+        "表达式描述计算，求值后产生值",
+        "语句描述动作，解释器执行语句时执行相应动作"
+      ]
+    },
+    {
+      "id": "gt-004",
+      "name": "Assignment",
+      "must_understand": [
+        "赋值语句将名称与表达式的值关联",
+        "名称绑定到值之后可以通过名称引用该值"
+      ]
+    },
+    {
+      "id": "gt-005",
+      "name": "Functions and Objects",
+      "must_understand": [
+        "函数封装了操作数据的逻辑",
+        "对象将数据和操作数据的逻辑捆绑在一起"
+      ]
+    },
+    {
+      "id": "gt-006",
+      "name": "Interpreter",
+      "must_understand": [
+        "解释器是实现求值复合表达式过程的程序",
+        "交互式 Python 会话通过 >>> 提示符接受输入",
+        "解释器读取用户代码并立即执行"
+      ]
+    },
+    {
+      "id": "gt-007",
+      "name": "Debugging",
+      "must_understand": [
+        "调试是学习解释错误并诊断意外错误原因的过程",
+        "错误是学习过程中的正常部分"
+      ]
+    }
+  ],
+  "expected_relationships": [
+    {"from": "gt-001", "to": "gt-002", "type": "depends_on", "explanation": "理解编程语言需要先理解计算的基本概念"},
+    {"from": "gt-003", "to": "gt-004", "type": "depends_on", "explanation": "赋值语句是一种语句类型，需要先理解语句和表达式的区别"},
+    {"from": "gt-003", "to": "gt-006", "type": "depends_on", "explanation": "解释器处理的是表达式和语句"},
+    {"from": "gt-006", "to": "gt-007", "type": "depends_on", "explanation": "调试需要理解解释器如何执行代码和报告错误"}
+  ]
+}

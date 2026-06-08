@@ -1,0 +1,101 @@
+# 编程语言基础：Environment 与作用域
+
+## 1. Environment 的定义
+
+Environment（环境）是编程语言运行时中维护变量名到值的映射的数据结构。
+简单来说，Environment 就是一个表，它记录了当前程序中每个变量名对应什么值。
+
+当程序执行到 `x = 10` 时，运行时会做两件事：
+1. 在当前 Environment 中查找名为 "x" 的条目
+2. 如果存在则更新其值为 10，如果不存在则创建新条目 "x" → 10
+
+当程序执行到 `print(x)` 时，运行时会：
+1. 在当前 Environment 中查找名为 "x" 的条目
+2. 如果找到则返回其值，如果未找到则报错 "NameError" 或类似错误
+
+## 2. 作用域与嵌套 Environment
+
+大多数编程语言不只有一个全局 Environment。
+每次函数调用都会创建一个新的 Environment。
+
+例如以下 Python 代码：
+
+```python
+x = 1                    # 全局 Environment: {x: 1}
+
+def foo():
+    x = 2                # foo 的 Environment: {x: 2}
+    print(x)             # 查找 x，从 foo 的 Environment 找到 x=2
+
+foo()                    # 输出 2
+print(x)                 # 输出 1（全局 Environment 中的 x 未被修改）
+```
+
+这个例子说明：
+- 全局 Environment 和 foo 的局部 Environment 是两个独立的环境
+- 同名变量 "x" 在两个环境中分别指向不同的值
+- 在 foo 内部查找变量时，优先查找 foo 自己的 Environment
+
+## 3. 变量查找规则（作用域链）
+
+当需要查找一个变量时，运行时会按照"从内向外"的顺序搜索 Environment：
+
+1. 首先搜索当前（最内层）的 Environment
+2. 如果未找到，搜索外层 Environment
+3. 重复直到找到变量或到达全局 Environment
+4. 如果全局 Environment 也未找到，报错
+
+这种嵌套 Environment 形成的查找路径称为"作用域链"（Scope Chain）。
+内层 Environment 可以"遮蔽"（shadow）外层的同名变量。
+
+## 4. 词法作用域（Lexical Scope）
+
+词法作用域是指：变量的作用域由源代码中变量定义的位置决定，而非运行时调用栈决定。
+
+这意味着：
+- 函数内部可以访问定义时所在作用域中的变量
+- 函数内部定义的变量，外部无法访问
+- 变量的查找路径在代码编写时就已经确定
+
+例如：
+
+```python
+x = "global"
+
+def outer():
+    x = "outer"
+    def inner():
+        print(x)     # 查找 x：inner → outer → global
+    inner()
+
+outer()               # 输出 "outer"（找到 outer 中的 x）
+```
+
+`inner` 函数定义在 `outer` 内部，因此 `inner` 的 Environment 的外层是 `outer` 的 Environment，
+而不是全局 Environment。这是词法作用域的核心：查找路径取决于代码的嵌套结构。
+
+## 5. 闭包（Closure）
+
+闭包是词法作用域的自然延伸。
+当一个函数引用了其外部作用域的变量，并且这个函数在外部作用域之外被调用时，
+这个函数加上它捕获的外部变量就形成了一个闭包。
+
+例如：
+
+```python
+def make_counter():
+    count = 0
+    def counter():
+        nonlocal count
+        count += 1
+        return count
+    return counter
+
+c = make_counter()
+print(c())   # 1
+print(c())   # 2
+```
+
+`counter` 函数引用了 `make_counter` 中的 `count` 变量。
+即使 `make_counter` 已经返回，`count` 仍然被 `counter` 函数保持着。
+这就是闭包：函数 + 它所捕获的外部 Environment。
